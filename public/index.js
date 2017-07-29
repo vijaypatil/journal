@@ -22,14 +22,13 @@ const deleteNote = (id) => {
 }
 
 const editNote = (rec) => {
-  console.log('editNote:', JSON.stringify(rec));
   m.request({method: 'put', url: `/sigevents/${rec.id}`, data: rec})
 }
 
 const Events = {
   oncreate: fetchNotes,
   view() {
-    return (events.length == 0)
+    return (events.length === 0)
       ? m('.well well-lg', 'There are no events yet...')
       : events.map((e) => (
           m('div', [
@@ -64,6 +63,7 @@ const Entry = {
         Entry.value = events[index].note
         Entry.oldRec = Object.assign({}, events[index])
         Entry.inAdd = false
+        document.querySelector('#editor').focus()
       }
     }
   },
