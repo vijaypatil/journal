@@ -1,14 +1,20 @@
-/* global m */
+/* global m, _ */
 'use strict'
 
 const Store = {
 
   events: [],
+  eventsMap: {},
+
+  groupByDate(response) {
+    Store.events = response
+    Store.eventsMap = _.groupBy(Store.events, (e) => (e.createdAt.split('T')[0]))
+  },
 
   fetchNotes() {
     m.request({method: 'get', url: '/sigevents'})
       .then((response) => {
-        Store.events = response
+        Store.groupByDate(response)
       })
       .catch((e) => {
         alert(e.message)
@@ -34,14 +40,19 @@ const Events = {
   view() {
     return (Store.events.length === 0)
       ? m('.well well-lg', 'There are no events yet...')
-      : Store.events.map((e) => (
-          m('div', [
-            m('span.glyphicon.glyphicon-remove-circle', {
-                'aria-hidden':true,
-                onclick: Entry.deleteEntry(e.id)
-            }),
-            m.trust(' &nbsp; '),
-            m('span', {onclick: Entry.setupEditEntry(e.id)}, e.note)
+      : Object.keys(Store.eventsMap).map((date) => (
+          m('p', [
+            m('h4', date),
+            Store.eventsMap[date].map((e) => {
+              return m('div', [
+                m('span.glyphicon.glyphicon-remove-circle', {
+                    'aria-hidden':true,
+                    onclick: Entry.deleteEntry(e.id)
+                }),
+                m.trust(' &nbsp; '),
+                m('span', {onclick: Entry.setupEditEntry(e.id)}, e.note)
+              ])
+            })
           ])))
   }
 }
