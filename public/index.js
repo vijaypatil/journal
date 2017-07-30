@@ -3,30 +3,33 @@
 
 var events = []
 
-const fetchNotes = () => {
-  m.request({method: 'get', url: '/sigevents'})
-    .then((response) => {
-      events = response
-    })
-    .catch((e) => {
-      alert(e.message)
-    })
-}
+const Store = {
+  fetchNotes() {
+    m.request({method: 'get', url: '/sigevents'})
+      .then((response) => {
+        events = response
+      })
+      .catch((e) => {
+        alert(e.message)
+      })
+    },
 
-const saveNote = (note) => {
-  m.request({method: 'post', url: '/sigevents', data: note})
-}
+  saveNote(note) {
+    m.request({method: 'post', url: '/sigevents', data: note})
+  },
 
-const deleteNote = (id) => {
-  m.request({method: 'delete', url: `/sigevents/${id}`})
-}
+  deleteNote(id) {
+    m.request({method: 'delete', url: `/sigevents/${id}`})
+  },
 
-const editNote = (rec) => {
-  m.request({method: 'put', url: `/sigevents/${rec.id}`, data: rec})
+  editNote(rec) {
+    m.request({method: 'put', url: `/sigevents/${rec.id}`, data: rec})
+  }
+
 }
 
 const Events = {
-  oncreate: fetchNotes,
+  oncreate: Store.fetchNotes,
   view() {
     return (events.length === 0)
       ? m('.well well-lg', 'There are no events yet...')
@@ -72,12 +75,11 @@ const Entry = {
       const index = events.findIndex(((e) => e.id === id))
       if (index >= 0) {
         events.splice(index, 1)
-        deleteNote(id)
+        Store.deleteNote(id)
       }
     }
   },
   newEntry() {
-    console.log('newEntry');
     Entry.inAdd = true
     Entry.value = ''
     document.querySelector('#editor').focus()
@@ -93,11 +95,11 @@ const Entry = {
       rec.note = v
       rec.createdAt = new Date().toISOString()
       events.push(rec)
-      saveNote(rec)
+      Store.saveNote(rec)
     } else {
       Entry.oldRec.note = v
       events[Entry.index] = Object.assign({}, Entry.oldRec)
-      editNote(Entry.oldRec)
+      Store.editNote(Entry.oldRec)
     }
     document.querySelector('#editor').focus()
     Entry.setValue('')
@@ -122,17 +124,15 @@ const Main = {
             id: 'editor',
           }),
           m('span.input-group-btn',
-            m('button.btn.btn-default.button-outline', {onclick: Entry.saveEntry}, 'Done!')))),
+            m('button.btn.btn-default.button-outline', {onclick: Entry.saveEntry}, 'Save')))),
       m(Events)
     ]
   }
 }
 
-m.mount(document.querySelector('#app'), Main)
+const guid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8)
+  return v.toString(16)
+})
 
-function guid() {
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-		return v.toString(16);
-	});
-}
+m.mount(document.querySelector('#app'), Main)
