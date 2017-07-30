@@ -55,9 +55,9 @@ const Events = {
                 //     onclick: Entry.deleteEntry(e.id)
                 // }),
                 // <i class="fa fa-camera-retro"></i>
-                m('i.fa.fa-ban', {onclick: Entry.deleteEntry(e.id), 'aria-hidden':true,}),
-                m.trust(' &nbsp; &nbsp; '),
-                m('span', {onclick: Entry.setupEditEntry(e.id)}, e.note)
+                m('span', {onclick: Entry.setupEditEntry(e.id)}, e.note),
+                m('i.fa.fa-ban.pull-right', {onclick: Entry.deleteEntry(e.id), 'aria-hidden':true,}),
+                m.trust(' &nbsp; &nbsp; '), // Delete icon to the right is difficult to select.
               ])
             })
           ])))
