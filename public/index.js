@@ -6,15 +6,15 @@ const Store = {
   events: [],
   eventsMap: {},
 
-  groupByDate(response) {
-    Store.events = response
+  groupByDate() {
     Store.eventsMap = _.groupBy(Store.events, (e) => (e.createdAt.split('T')[0]))
   },
 
   fetchNotes() {
     m.request({method: 'get', url: '/sigevents'})
       .then((response) => {
-        Store.groupByDate(response)
+        Store.events = response
+        Store.groupByDate()
       })
       .catch((e) => {
         alert(e.message)
@@ -23,10 +23,12 @@ const Store = {
 
   saveNote(note) {
     m.request({method: 'post', url: '/sigevents', data: note})
+    Store.groupByDate()
   },
 
   deleteNote(id) {
     m.request({method: 'delete', url: `/sigevents/${id}`})
+    Store.groupByDate()
   },
 
   editNote(rec) {
@@ -38,9 +40,10 @@ const Store = {
 const Events = {
   oncreate: Store.fetchNotes,
   view() {
+    const dates = Object.keys(Store.eventsMap).reverse()
     return (Store.events.length === 0)
       ? m('.well well-lg', 'There are no events yet...')
-      : Object.keys(Store.eventsMap).map((date) => (
+      : dates.map((date) => (
           m('p', [
             m('h4', date),
             Store.eventsMap[date].map((e) => {
