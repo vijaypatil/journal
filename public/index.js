@@ -1,13 +1,14 @@
 /* global m */
 'use strict'
 
-var events = []
-
 const Store = {
+
+  events: [],
+
   fetchNotes() {
     m.request({method: 'get', url: '/sigevents'})
       .then((response) => {
-        events = response
+        Store.events = response
       })
       .catch((e) => {
         alert(e.message)
@@ -31,9 +32,9 @@ const Store = {
 const Events = {
   oncreate: Store.fetchNotes,
   view() {
-    return (events.length === 0)
+    return (Store.events.length === 0)
       ? m('.well well-lg', 'There are no events yet...')
-      : events.map((e) => (
+      : Store.events.map((e) => (
           m('div', [
             m('span.glyphicon.glyphicon-remove-circle', {
                 'aria-hidden':true,
@@ -60,11 +61,11 @@ const Entry = {
   },
   setupEditEntry(id) {
     return () => {
-      const index = events.findIndex(((e) => e.id === id))
+      const index = Store.events.findIndex(((e) => e.id === id))
       if (index >= 0) {
         Entry.index = index
-        Entry.value = events[index].note
-        Entry.oldRec = Object.assign({}, events[index])
+        Entry.value = Store.events[index].note
+        Entry.oldRec = Object.assign({}, Store.events[index])
         Entry.inAdd = false
         document.querySelector('#editor').focus()
       }
@@ -72,9 +73,9 @@ const Entry = {
   },
   deleteEntry(id) {
     return () => {
-      const index = events.findIndex(((e) => e.id === id))
+      const index = Store.events.findIndex(((e) => e.id === id))
       if (index >= 0) {
-        events.splice(index, 1)
+        Store.events.splice(index, 1)
         Store.deleteNote(id)
       }
     }
@@ -94,11 +95,11 @@ const Entry = {
       rec.id = guid()
       rec.note = v
       rec.createdAt = new Date().toISOString()
-      events.push(rec)
+      Store.events.push(rec)
       Store.saveNote(rec)
     } else {
       Entry.oldRec.note = v
-      events[Entry.index] = Object.assign({}, Entry.oldRec)
+      Store.events[Entry.index] = Object.assign({}, Entry.oldRec)
       Store.editNote(Entry.oldRec)
     }
     document.querySelector('#editor').focus()
