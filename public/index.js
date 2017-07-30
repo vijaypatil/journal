@@ -1,13 +1,14 @@
-/* global m, _ */
+/* global m, R */
 'use strict'
 
 const Store = {
 
   events: [],
   eventsMap: {},
+  fnGroupByDate: R.groupBy((e) => (e.createdAt.split('T')[0])),
 
   groupByDate() {
-    Store.eventsMap = _.groupBy(Store.events, (e) => (e.createdAt.split('T')[0]))
+    Store.eventsMap = Store.fnGroupByDate(Store.events)
   },
 
   fetchNotes() {
@@ -54,7 +55,7 @@ const Events = {
                 //     onclick: Entry.deleteEntry(e.id)
                 // }),
                 // <i class="fa fa-camera-retro"></i>
-                m('i.fa.fa-trash', {onclick: Entry.deleteEntry(e.id), 'aria-hidden':true,}),
+                m('i.fa.fa-ban', {onclick: Entry.deleteEntry(e.id), 'aria-hidden':true,}),
                 m.trust(' &nbsp; &nbsp; '),
                 m('span', {onclick: Entry.setupEditEntry(e.id)}, e.note)
               ])
