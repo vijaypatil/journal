@@ -36,11 +36,6 @@
       "createdAt": "2017-07-29T18:47:48.932Z"
     },
     {
-      "id": "ea7cc532-1d3d-4553-a28e-1edbaf8852ca",
-      "note": "How cool is this?",
-      "createdAt": "2017-07-29T19:49:38.404Z"
-    },
-    {
       "id": "d68762c5-7c99-403e-a587-d89ef118bd4f",
       "note": "Nothing quite like a good editor",
       "createdAt": "2017-07-29T19:51:10.661Z"
@@ -49,21 +44,6 @@
       "id": "94b31a60-6290-43a0-b35f-3be008690924",
       "note": "Editor is cool",
       "createdAt": "2017-07-29T19:51:15.296Z"
-    },
-    {
-      "id": "5932e975-b8aa-49e7-9768-9bffb6e19704",
-      "note": "Full edit functionality seems to be up",
-      "createdAt": "2017-07-29T19:51:19.728Z"
-    },
-    {
-      "id": "90677bad-717a-4858-988b-7c5e3aeaeb17",
-      "note": "This was a whole day exercise.",
-      "createdAt": "2017-07-29T19:51:42.048Z"
-    },
-    {
-      "id": "083fe535-702c-4f37-bacd-9327d96b8a0b",
-      "note": "Let's see how this edit op happens.",
-      "createdAt": "2017-07-29T19:52:56.661Z"
     }
   ]
 }

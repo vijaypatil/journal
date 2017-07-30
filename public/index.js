@@ -76,6 +76,12 @@ const Entry = {
       }
     }
   },
+  newEntry() {
+    console.log('newEntry');
+    Entry.inAdd = true
+    Entry.value = ''
+    document.querySelector('#editor').focus()
+  },
   saveEntry() {
     const v = Entry.value.trim()
     if (v == '') {
@@ -102,7 +108,9 @@ const Entry = {
 const Main = {
   view() {
     return [
-      m('h3', "Day's Journal"),
+      m('h3', "Day's Journal",
+        m.trust(' &nbsp; '),
+        m('button.btn..btn-xs.btn-primary', {onclick: Entry.newEntry}, 'New Note')),
       m('.col-md-12', {style:"padding-left:0px; margin-bottom:0.5em"},
         m('.input-group',
           m('input.form-control.pull-left[type=text]', {
