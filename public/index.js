@@ -5,7 +5,8 @@ const Store = {
 
   events: [],
   eventsMap: {},
-  fnGroupByDate: R.groupBy((e) => (e.createdAt.split('T')[0])),
+  fnGroupByDate: R.groupBy((e) => (new Date(e.createdAt).toLocaleDateString())),
+                  // e.createdAt.split('T')[0])),
 
   groupByDate() {
     Store.eventsMap = Store.fnGroupByDate(Store.events)

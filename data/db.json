@@ -54,6 +54,21 @@
       "id": "f7b1cfc1-ba10-4520-817d-77d18576bbc0",
       "note": "The symbol will appear as a label, at the end of the note. Highlighted appropriately.",
       "createdAt": "2017-07-30T09:41:05.859Z"
+    },
+    {
+      "id": "3521f4b8-2b74-42a5-85c4-df8583f691ca",
+      "note": "Trying to work with async/await in jInsight project.",
+      "createdAt": "2017-07-30T18:51:02.688Z"
+    },
+    {
+      "id": "a0f9ec6d-c0f8-49cc-9101-7a7bb393e84c",
+      "note": "Good progress with jInsight.",
+      "createdAt": "2017-07-31T12:12:03.346Z"
+    },
+    {
+      "id": "39d4c016-90c8-4a70-9a29-ee7b029cbb4c",
+      "note": "Killed the DO droplet.",
+      "createdAt": "2017-07-31T12:45:31.320Z"
     }
   ]
 }
