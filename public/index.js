@@ -3,10 +3,16 @@
 
 const Store = {
 
+  // All our Notes belong here!
   events: [],
+
+  // The key will be the locale date of the note's timestamp.
   eventsMap: {},
+
+  // We will be grouping by date strings such as 2017-7-30, rather than 2017-07-30.
+  // The difference does not matter, since we are consistent with the date format.
+  // Also, the LocaleDate will take care of UTC to local date conversion.
   fnGroupByDate: R.groupBy((e) => (new Date(e.createdAt).toLocaleDateString())),
-                  // e.createdAt.split('T')[0])),
 
   groupByDate() {
     Store.eventsMap = Store.fnGroupByDate(Store.events)
