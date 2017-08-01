@@ -17,6 +17,10 @@ const Store = {
     Store.eventsMap = Store.fnGroupByDate(Store.events)
   },
 
+  groupByDateFiltered(_events) {
+    Store.eventsMap = Store.fnGroupByDate(_events)
+  },
+
   fetchNotes() {
     m.request({method: 'get', url: '/sigevents'})
       .then((response) => {
@@ -65,19 +69,14 @@ const highlightLink = (note) => {
 const Events = {
   oncreate: Store.fetchNotes,
   view() {
-    const dates = Object.keys(Store.eventsMap).reverse()
+    const dates = Object.keys(Store.eventsMap).reverse() // Latest first.
     return (Store.events.length === 0)
-      ? m('.well well-lg', 'There are no events yet...')
+      ? m('.well well-lg', 'You have not made any notes yet... Make one now.')
       : dates.map((date) => (
           m('p', [
             m('h4', date),
             Store.eventsMap[date].map((e) => {
               return m('div', [
-                // m('span.glyphicon.glyphicon-remove-circle', {
-                //     'aria-hidden':true,
-                //     onclick: Entry.deleteEntry(e.id)
-                // }),
-                // <i class="fa fa-camera-retro"></i>
                 m('i.fa.fa-ban', {onclick: Entry.deleteEntry(e.id), 'aria-hidden':true,}),
                 m.trust(' &nbsp; &nbsp; '),
                 m('span',
@@ -96,6 +95,16 @@ const Entry = {
   index: 0,
   setValue(v) {
     Entry.value = v
+    const searchprompt = ':s '
+    if (v.trim().startsWith(searchprompt) && v.length > searchprompt.length) {
+      const searchterm = v.substring(searchprompt.length).toLowerCase()
+      const matchedNotes = Store.events.filter((e) => e.note.toLowerCase().indexOf(searchterm) >= 0)
+      if (matchedNotes.length > 0) {
+        Store.groupByDateFiltered(matchedNotes)
+      }
+    } else {
+      Store.groupByDate()
+    }
   },
   keyUp(e) {
     if (e.keyCode === 13) {
