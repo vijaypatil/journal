@@ -2,7 +2,6 @@
 'use strict'
 
 const Store = {
-
   // All our Notes belong here!
   events: [],
 
@@ -43,7 +42,24 @@ const Store = {
     m.request({method: 'put', url: `/sigevents/${rec.id}`, data: rec})
     Store.groupByDate()
   }
+}
 
+const highlightLink = (note) => {
+  let protopos = note.indexOf('https://')
+  if (protopos < 0) {
+    protopos = note.indexOf('http://')
+  }
+  if (protopos >= 0) {
+    let i = protopos
+    while ((note.charAt(i) != ' ') && i < note.length) {
+      i++
+    }
+    const notestart = note.substring(0, protopos)
+    const noteend = note.substring(i)
+    const href = note.substring(protopos, i)
+    return `${notestart} <a href='${href}' target=_blank>${href}</a> ${noteend}`
+  }
+  return note
 }
 
 const Events = {
@@ -64,7 +80,9 @@ const Events = {
                 // <i class="fa fa-camera-retro"></i>
                 m('i.fa.fa-ban', {onclick: Entry.deleteEntry(e.id), 'aria-hidden':true,}),
                 m.trust(' &nbsp; &nbsp; '),
-                m('span', {onclick: Entry.setupEditEntry(e.id)}, e.note)
+                m('span',
+                    {onclick: Entry.setupEditEntry(e.id)},
+                    m.trust(highlightLink(e.note)))
               ])
             })
           ])))
