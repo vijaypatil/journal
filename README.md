@@ -1,5 +1,5 @@
-## WDIDT - What Did I Do Today.
+## Journal - What Did I Do!
 
-Capture notes of what you did today.
+Capture notes about the things you did today.
 
-Mithril - Jsoon-server
+Built with the excellent Mithril & `json-server`.
