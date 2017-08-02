@@ -48,46 +48,6 @@ const Store = {
   }
 }
 
-const highlightLink = (note) => {
-  let protopos = note.indexOf('https://')
-  if (protopos < 0) {
-    protopos = note.indexOf('http://')
-  }
-  if (protopos >= 0) {
-    let i = protopos
-    while ((note.charAt(i) != ' ') && i < note.length) {
-      i++
-    }
-    const notestart = note.substring(0, protopos)
-    const noteend = note.substring(i)
-    const href = note.substring(protopos, i)
-    return `${notestart} <a href='${href}' target=_blank>${href}</a> ${noteend}`
-  }
-  return note
-}
-
-const Events = {
-  oncreate: Store.fetchNotes,
-  view() {
-    const dates = Object.keys(Store.eventsMap).reverse() // Latest first.
-    return (Store.events.length === 0)
-      ? m('.well well-lg', 'You have not made any notes yet... Make one now.')
-      : dates.map((date) => (
-          m('p', [
-            m('h4', date),
-            Store.eventsMap[date].map((e) => {
-              return m('div', [
-                m('i.fa.fa-ban', {onclick: Entry.deleteEntry(e.id), 'aria-hidden':true,}),
-                m.trust(' &nbsp; &nbsp; '),
-                m('span',
-                    {onclick: Entry.setupEditEntry(e.id)},
-                    m.trust(highlightLink(e.note)))
-              ])
-            })
-          ])))
-  }
-}
-
 const Entry = {
   value: '',
   inAdd: true,
@@ -96,8 +56,9 @@ const Entry = {
   setValue(v) {
     Entry.value = v
     const searchprompt = ':s '
-    if (v.trim().startsWith(searchprompt) && v.length > searchprompt.length) {
-      const searchterm = v.substring(searchprompt.length).toLowerCase()
+    const cmd = v.trim()
+    if ((cmd.startsWith(searchprompt) || cmd.startsWith(':q ')) && cmd.length > searchprompt.length) {
+      const searchterm = v.substring(searchprompt.length).trim().toLowerCase()
       const matchedNotes = Store.events.filter((e) => e.note.toLowerCase().indexOf(searchterm) >= 0)
       if (matchedNotes.length > 0) {
         Store.groupByDateFiltered(matchedNotes)
@@ -107,7 +68,7 @@ const Entry = {
     }
   },
   keyUp(e) {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && !Entry.value.startsWith(':')) {
       Entry.saveEntry()
     }
   },
@@ -157,6 +118,46 @@ const Entry = {
     document.querySelector('#editor').focus()
     Entry.setValue('')
     Entry.inAdd = true
+  }
+}
+
+const highlightLink = (note) => {
+  let protopos = note.indexOf('https://')
+  if (protopos < 0) {
+    protopos = note.indexOf('http://')
+  }
+  if (protopos >= 0) {
+    let i = protopos
+    while (i < note.length && (note.charAt(i) != ' ')) {
+      i++
+    }
+    const notestart = note.substring(0, protopos)
+    const noteend = note.substring(i)
+    const href = note.substring(protopos, i)
+    return `${notestart} <a href='${href}' target=_blank>${href}</a> ${noteend}`
+  }
+  return note
+}
+
+const Events = {
+  oncreate: Store.fetchNotes,
+  view() {
+    const dates = Object.keys(Store.eventsMap).reverse() // Latest first.
+    return (Store.events.length === 0)
+      ? m('.well well-lg', 'You have not made any notes yet... Make one now.')
+      : dates.map((date) => (
+          m('p', [
+            m('h4', date),
+            Store.eventsMap[date].map((e) => {
+              return m('div.spaced', [
+                m('i.fa.fa-ban', {onclick: Entry.deleteEntry(e.id), 'aria-hidden':true,}),
+                m.trust(' &nbsp; &nbsp; '),
+                m('span',
+                    {onclick: Entry.setupEditEntry(e.id), style:'white-space:pre-line'},
+                    m.trust(highlightLink(e.note)))
+              ])
+            })
+          ])))
   }
 }
 
