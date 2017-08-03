@@ -1,6 +1,9 @@
 /* global m, R */
 'use strict'
 
+/**
+ * Connect to backend.
+ */
 const Store = {
   // All our Notes belong here!
   events: [],
@@ -48,6 +51,10 @@ const Store = {
   }
 }
 
+/**
+ * A single note entry is managed thusly.
+ * Interfaces Mithril components & the Store.
+ */
 const Entry = {
   value: '',
   inAdd: true,
@@ -139,6 +146,9 @@ const highlightLink = (note) => {
   return note
 }
 
+/**
+ * Mithril's provided View for all our Notes.
+ */
 const Events = {
   oncreate: Store.fetchNotes,
   view() {
@@ -161,6 +171,10 @@ const Events = {
   }
 }
 
+/**
+ * Our Main or `outer` component.
+ * Houses all our Notes.
+ */
 const Main = {
   view() {
     return [
