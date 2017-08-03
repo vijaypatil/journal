@@ -1,6 +1,6 @@
-## Journal - What Did I Do!
+## Journal!
 
-> Capture your notes.
+> A simple Journaling app.
 
 Built with the excellent Mithril, Ramda libraries & using json-server to serve the app and store the Notes & Bootstrap/Bootswatch/flatly for web page styling.
 
