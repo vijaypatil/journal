@@ -193,7 +193,9 @@ const Main = {
           }),
           m('span.input-group-btn',
             m('button.btn.btn-default.button-outline', {onclick: Entry.saveEntry}, 'Save')))),
-      m(Events)
+      m(Events),
+      m('hr'),
+      m('i.small', 'Mithril v' + m.version)
     ]
   }
 }
