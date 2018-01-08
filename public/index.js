@@ -129,10 +129,7 @@ const Entry = {
 }
 
 const highlightLink = (note) => {
-  let protopos = note.indexOf('https://')
-  if (protopos < 0) {
-    protopos = note.indexOf('http://')
-  }
+  const protopos = note.indexOf('http')
   if (protopos >= 0) {
     let i = protopos
     while (i < note.length && (note.charAt(i) != ' ')) {
