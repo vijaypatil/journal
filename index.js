@@ -1,5 +1,7 @@
-/* global m, R */
-'use strict'
+const m = require('mithril')
+const R = require('ramda')
+
+const SIGEVENT_URL = 'http://localhost:3000/sigevents'
 
 /**
  * Connect to backend.
@@ -25,7 +27,7 @@ const Store = {
   },
 
   fetchNotes() {
-    m.request({method: 'get', url: '/sigevents'})
+    m.request({method: 'get', url: SIGEVENT_URL})
       .then((response) => {
         Store.events = response
         Store.groupByDate()
@@ -36,17 +38,17 @@ const Store = {
     },
 
   saveNote(note) {
-    m.request({method: 'post', url: '/sigevents', data: note})
+    m.request({method: 'post', url: SIGEVENT_URL, data: note})
     Store.groupByDate()
   },
 
   deleteNote(id) {
-    m.request({method: 'delete', url: `/sigevents/${id}`})
+    m.request({method: 'delete', url: `${SIGEVENT_URL}/${id}`})
     Store.groupByDate()
   },
 
   editNote(rec) {
-    m.request({method: 'put', url: `/sigevents/${rec.id}`, data: rec})
+    m.request({method: 'put', url: `${SIGEVENT_URL}/${rec.id}`, data: rec})
     Store.groupByDate()
   }
 }

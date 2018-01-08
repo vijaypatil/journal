@@ -2,24 +2,37 @@
 
 > A simple Journaling app.
 
-Built with Mithril, Ramda & Bootstrap. Uses json-server to serve the app and store the Notes.
+Built with Mithril, Ramda & Bootstrap.
+Uses `parceljs` & `json-server` to serve the app and store your notes.
 
-### Install & run
+### Install
 
-You should have a recent version of node on your machine.
+You should have a recent version of node on your machine, along with json-server & parceljs.
 
-Use
+To install parcel bundler, use:
+
+```sh
+npm install -g parcel-bundler
+```
+
+For json-server installation, use:
 
 ```sh
 npm install -g json-server
 ```
 
-to install the json-server web & data server.
+### Run
 
-Use
+From one terminal, serve the data files `data/db.json`
 
 ```sh
-json-server data\db.json
+json-server -w data/db.json
 ```
 
-to serve the app at http://localhost:3000
+From another terminal, run:
+
+```sh
+parcel index.html
+````
+
+to serve the app at http://localhost:1234
